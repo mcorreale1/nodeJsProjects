@@ -10,8 +10,9 @@ app.get('/', function(req, res) {
 });
 
 io.sockets.on('connection', function(socket) {
-    console.log('TEST');
+    console.log('TEST   ');
     socket.on('username', function(username) {
+        console.log(username)
         socket.username = username;
         io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
     });
