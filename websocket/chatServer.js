@@ -1,20 +1,32 @@
 const express = require('express');
-const http = require('http');
-const ws = require('ws');
-const port = 6600;
-const server = http.createServer(express);
-const socket = new WebSocket.Server({server});
+const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+const ejs = require('ejs');
 
-
-
-
-
-/*
-const server = http.createServer((req, res) => {
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    res.end(JSON.stringify({
-        data: "Hello World!"
-    }));
+app.get('/', function(req, res) {
+    res.render('index.ejs');
+    console.log('test2');
 });
-*/
-server.listen(port);
+
+io.sockets.on('connection', function(socket) {
+    console.log('TEST');
+    socket.on('username', function(username) {
+        socket.username = username;
+        io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
+    });
+
+    socket.on('disconnect', function(username) {
+        io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
+    })
+
+    socket.on('chat_message', function(message) {
+        console.log(message);
+        io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
+    });
+
+});
+
+const server = http.listen(8080, function() {
+    console.log('listening on *:8080');
+});
