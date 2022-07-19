@@ -3,17 +3,20 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const ejs = require('ejs');
+const chatCommands = require('./chatCommand.js');
+
+
 
 app.get('/', function(req, res) {
     res.render('index.ejs');
-    console.log('test2');
 });
 
 io.sockets.on('connection', function(socket) {
-    console.log('TEST   ');
     socket.on('username', function(username) {
-        console.log(username)
         socket.username = username;
+
+        console.log(socket.username + "  " + socket.id);
+
         io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
     });
 
@@ -22,8 +25,14 @@ io.sockets.on('connection', function(socket) {
     })
 
     socket.on('chat_message', function(message) {
-        console.log(message);
-        io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
+        let checkMsg = chatCommands.checkMessage(message);
+        if(checkMsg === null) {
+            io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
+        } else {
+            // Only send to the current user
+            console.log('Sending message');
+            io.to(socket.id).emit('chat_message', checkMsg)
+        };
     });
 
 });
