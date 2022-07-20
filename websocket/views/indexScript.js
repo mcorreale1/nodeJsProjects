@@ -1,22 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Simple Group Chat on Node.js</title>
-    <style>
 
-      <%- myCss.style %>
-      <link rel="stylesheet" type="text/css" href="./style.css">
-    </style>
-    <script src="../../socket.io/socket.io.js"></script>
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-  </head>
-  <body>
-    <ul id="messages"></ul>
-    <form action="/" method="POST" id="chatForm">
-      <input id="txt" autocomplete="off" autofocus="on" oninput="isTyping()" placeholder="type your message here..." /><button>Send</button> 
-    </form>
-    <script>
-      
       function setUsername(socket) {
         var username = prompt('Please tell me your name');       
         socket.emit('username', username);                    
@@ -43,7 +25,3 @@
 
       // ask username
       setUsername(socket);
-      
-    </script>
-  </body>
-</html>

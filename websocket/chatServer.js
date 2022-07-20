@@ -4,12 +4,18 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const ejs = require('ejs');
 const chatCommands = require('./chatCommand.js');
+const fs = require('fs');
 
-
+var myCss= {
+    style : fs.readFileSync('./views/style.css', 'utf-8')
+};
 
 app.get('/', function(req, res) {
-    res.render('index.ejs');
+    res.render('index.ejs', {
+        myCss: myCss
+    });
 });
+app.use('/views', express.static(__dirname + '/views'));
 
 io.sockets.on('connection', function(socket) {
     socket.on('username', function(username) {
@@ -29,9 +35,7 @@ io.sockets.on('connection', function(socket) {
         if(checkMsg === null) {
             io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
         } else {
-            // Only send to the current user
-            console.log('Sending message');
-            io.to(socket.id).emit('chat_message', checkMsg)
+            io.to(socket.id).emit('chat_message',checkMsg)
         };
     });
 
