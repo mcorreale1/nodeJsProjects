@@ -5,17 +5,19 @@ const io = require('socket.io')(http);
 const ejs = require('ejs');
 const chatCommands = require('./chatCommand.js');
 const fs = require('fs');
+const path = require('path');
 
 var myCss= {
     style : fs.readFileSync('./views/style.css', 'utf-8')
 };
+
 
 app.get('/', function(req, res) {
     res.render('index.ejs', {
         myCss: myCss
     });
 });
-app.use('/views', express.static(__dirname + '/views'));
+app.use(express.static(path.join(__dirname, 'views')));
 
 io.sockets.on('connection', function(socket) {
     socket.on('username', function(username) {

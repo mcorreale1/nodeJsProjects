@@ -3,7 +3,6 @@
   <head>
     <title>Simple Group Chat on Node.js</title>
     <style>
-
       <%- myCss.style %>
       <link rel="stylesheet" type="text/css" href="./style.css">
     </style>
@@ -11,39 +10,25 @@
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
   </head>
   <body>
+    <div class = "menuWrap">
+      <input type="checkbox" class="toggler">
+      <div class="hamburger"><div></div></div>
+        <div class="menu">
+          <div>
+            <ul>
+              <li><a href='#'>Home</a></li>
+              <li><a href='#'>About</a></li>
+              <li><a href='#'>Services</a></li>
+              <li><a href='#'>Contact</a></li>
+            </ul>
+          </div>
+        </div>
+    </div>
     <ul id="messages"></ul>
     <form action="/" method="POST" id="chatForm">
-      <input id="txt" autocomplete="off" autofocus="on" oninput="isTyping()" placeholder="type your message here..." /><button>Send</button> 
+      <input id="txt" autocomplete="off" autofocus="on" oninput="isTyping()" placeholder="type your message here..." />
+      <button class="sendButton">Send</button> 
     </form>
-    <script>
-      
-      function setUsername(socket) {
-        var username = prompt('Please tell me your name');       
-        socket.emit('username', username);                    
-      };
-      var socket = io();
-
-      // submit text message without reload/refresh the page
-      $('form').submit(function(e){
-        e.preventDefault(); // prevents page reloading
-        socket.emit('chat_message', $('#txt').val());
-        $('#txt').val('');
-        return false;
-      });
-
-      // append the chat text message
-        socket.on('chat_message', function(msg){
-        $('#messages').append($('<li>').html(msg));
-      });
-
-      // append text if someone is online
-      socket.on('is_online', function(username) {
-        $('#messages').append($('<li>').html(username));
-      });
-
-      // ask username
-      setUsername(socket);
-      
-    </script>
+    <script src = "./indexScript.js"></script>
   </body>
 </html>
