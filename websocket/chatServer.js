@@ -7,6 +7,12 @@ const chatCommands = require('./chatCommand.js');
 const fs = require('fs');
 const path = require('path');
 
+const {MongoClient} = require('mongodb');
+const mongoURI = 'mongodb+srv://mcorreale:yCTauZn8qixPZBll@cluster0.c16mq.mongodb.net/?retryWrites=true&w=majority';
+
+const mdclient = new MongoClient(mongoURI);
+mdclient.connect();
+
 var myCss= {
     style : fs.readFileSync('./views/style.css', 'utf-8')
 };
@@ -24,6 +30,23 @@ io.sockets.on('connection', function(socket) {
         socket.username = username;
 
         console.log(socket.username + "  " + socket.id);
+
+        try{
+            const db = mdclient.db("chatServer");
+            const cons = db.collection("Connections");
+            const date = new Date();
+            const doc = {
+                createdDate: date,
+                username: username,
+            };
+            const result = cons.insertOne(doc);
+
+            console.log(result);
+        } catch (e) {
+
+            console.log("ERROR: " + e);
+
+        };
 
         io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
     });
@@ -50,5 +73,7 @@ io.sockets.on('connection', function(socket) {
 });
 
 const server = http.listen(8080, function() {
+    dbList =  mdclient.db().admin().listDatabases();
+    console.log(dbList);
     console.log('listening on *:8080');
 });
