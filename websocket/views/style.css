@@ -107,7 +107,7 @@ TOP AT -10PX ABOVE THE MIDDLE ONE AND BOTTOM ONE IS 10PX BELOW THE MIDDLE: */
 /* IF THE TOGGLER IS CHECKED, THEN INCREASE THE WIDTH OF THE MENU TO 30% , CREATING A SMOOTH EFFECT :  */
 
 .toggler:checked ~ .menu{
-    width: 30%;
+    width: 15%;
     right: 0;
 }
 
@@ -137,7 +137,7 @@ TOP AT -10PX ABOVE THE MIDDLE ONE AND BOTTOM ONE IS 10PX BELOW THE MIDDLE: */
     right: 0;
     color: black;
     text-decoration: none;
-    font-size: 2rem;
+    font-size: 1rem;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 

@@ -1,7 +1,7 @@
 
-      function setUsername(socket) {
+      function setUsername(socket, event) {
         var username = prompt('Please tell me your name');       
-        socket.emit('username', username);                    
+        socket.emit(event, username);                    
       };
       var socket = io();
 
@@ -12,6 +12,12 @@
         $('#txt').val('');
         return false;
       });
+      
+/* 
+        $.('#changeName').click(function(e) {
+          setUsername(socket);
+        });
+        */     
 
       // append the chat text message
         socket.on('chat_message', function(msg){
@@ -24,4 +30,12 @@
       });
 
       // ask username
-      setUsername(socket);
+      setUsername(socket, 'username');
+
+      $(document).ready(function() {
+        $('#changeName').click(function() {
+          setUsername(socket, 'rename');
+
+        });
+      });
+

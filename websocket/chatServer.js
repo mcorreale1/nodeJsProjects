@@ -28,6 +28,12 @@ io.sockets.on('connection', function(socket) {
         io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
     });
 
+    socket.on('rename', function(name) {
+        var oldname = socket.username;
+        socket.username = name;
+        io.emit('is_online', '🔵 <i>'+ oldname + ' has changed their name to ' + socket.username +' ..</i>');
+    });
+
     socket.on('disconnect', function(username) {
         io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
     })
