@@ -8,7 +8,8 @@ const fs = require('fs');
 const path = require('path');
 
 const {MongoClient} = require('mongodb');
-const mongoURI = 'mongodb+srv://mcorreale:yCTauZn8qixPZBll@cluster0.c16mq.mongodb.net/?retryWrites=true&w=majority';
+const mongoURI = fs.readFileSync('./conf.txt', 'utf-8').toString();
+console.log(mongoURI);
 
 const mdclient = new MongoClient(mongoURI);
 mdclient.connect();
