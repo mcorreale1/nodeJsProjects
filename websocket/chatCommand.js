@@ -9,4 +9,3 @@ function checkMessage(message) {
     return null;
 }
 
-module.exports.checkMessage = checkMessage;
