@@ -4,11 +4,10 @@ const chatCommands = require('./chatCommand.js');
 const fs = require('fs');
 const path = require('path');
 
-const {MongoClient} = require('mongodb');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const mongoURI = fs.readFileSync('./conf.txt', 'utf-8').toString();
-console.log(mongoURI);
 
-const mdclient = new MongoClient(mongoURI);
+const mdclient = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 mdclient.connect();
 
 app.get('/', function(req, res) {
