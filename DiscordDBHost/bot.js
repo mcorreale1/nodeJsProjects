@@ -106,14 +106,21 @@ client.on(Events.MessageCreate, async interaction => {
     const lbData = await getLeaderboardData(steamDBUrl);
     console.log(lbData);
     
-    const fieldData = lbData.join("\r\n");
+    const formattedData = [];
+    formattedData.push(':first_place: ' + lbData[0].substring(3));
+    formattedData.push(':second_place: ' + lbData[1].substring(3));
+    formattedData.push( ':third_place: ' + lbData[2].substring(3));
+    for ( i of lbData.slice(3, 15)) 
+        formattedData.push(i);
+    
 
-    console.log(fieldData);
+    const fieldData = formattedData.join("\r\n");
 
+      console.log(formattedData);
 
     const embed = new EmbedBuilder()
         .setColor(0x0099FF)
-	    .setTitle('Leaderboard Data for ' + capitalize(params[1]) + ' ' + params[2])
+	    .setTitle(':trophy: Leaderboard Data for ' + capitalize(params[1]) + ' ' + params[2])
 	    .setURL(steamDBUrl)
         .setThumbnail('https://cdn.akamai.steamstatic.com/steam/apps/2226160/header.jpg?t=1678061552')  
         .addFields(
