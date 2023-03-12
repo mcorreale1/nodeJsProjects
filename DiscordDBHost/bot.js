@@ -4,7 +4,7 @@ const express = require('express');
 const config = require ('./config.json');
 const {Client, GatewayIntentBits, Events, EmbedBuilder} = require('discord.js');
 const discKey = config['DISCORD'];
-const lbdata = require('./leaderboards.json');
+const URLData = require('./leaderboards.json');
 
 
 
@@ -18,10 +18,14 @@ const client = new Client({intents: [
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent]}
 );
+function capitalize(s)
+{
+    return s[0].toUpperCase() + s.slice(1);
+};
 
 function getLeaderboardURL(stage, num) {
    
-    return 'https://steamcommunity.com/stats/2226160/leaderboards/' + lbdata[stage][num];
+    return 'https://steamcommunity.com/stats/2226160/leaderboards/' + URLData[stage][num];
 
 };
 
@@ -58,7 +62,17 @@ async function getLeaderboardData(url) {
 };
 
 function getMessageParams(msg) {
-    params = msg.split(/(\s+)/).filter(i => i.trim().length > 0);
+    params = msg.split(/(\s+)/).reduce( (f,o)  => {
+        if(o.trim().length > 0) {
+            f.push(o.trim().toLowerCase());
+        };
+        return f;
+    }, []);
+
+    if(params.length != 3) return [];
+    if(params[0] != "!ent") return [];
+    if(!URLData.hasOwnProperty(params[1])) return [];
+    if(!URLData[params[1]].hasOwnProperty(params[2])) return [];
     return params;
 }
 
@@ -86,7 +100,7 @@ client.on(Events.MessageCreate, async interaction => {
     content =interaction.content.trim();
     params = getMessageParams(content);
 
-    if (params.length != 3 || params[0] != "!entlb") return;
+    if (params.length != 3 ) return;
     console.log(params);
     const steamDBUrl = getLeaderboardURL(params[1], params[2]);
     const lbData = await getLeaderboardData(steamDBUrl);
@@ -99,8 +113,9 @@ client.on(Events.MessageCreate, async interaction => {
 
     const embed = new EmbedBuilder()
         .setColor(0x0099FF)
-	    .setTitle('Leaderboard Data for ' + params[1] + ' ' + params[2])
+	    .setTitle('Leaderboard Data for ' + capitalize(params[1]) + ' ' + params[2])
 	    .setURL(steamDBUrl)
+        .setThumbnail('https://cdn.akamai.steamstatic.com/steam/apps/2226160/header.jpg?t=1678061552')  
         .addFields(
             {name: " ", value: fieldData}
         )
