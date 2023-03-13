@@ -11,7 +11,7 @@ New connections are stored in MongoDB
 ## Bot.js
 Hosting a simple get/post server for a discord bot. 
 
-!ent <stage> <num> 
+!ent \<stage> \<num> 
 
 
 ![img](https://i.imgur.com/9yDdaSQ.png)
