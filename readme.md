@@ -7,4 +7,11 @@ Chat server using NodeJS, WebSockets, and MongoDB.
 New connections are stored in MongoDB
 
 ### DiscordBot
-Hosting a simple get/post server for a discord bot. More to come
+
+## Bot.js
+Hosting a simple get/post server for a discord bot. 
+
+!ent <stage> <num> 
+
+
+![img](https://i.imgur.com/9yDdaSQ.png)
