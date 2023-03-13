@@ -1,2 +1,5 @@
 conf.txt
+config.json
+scrape.js
+steam.js
 node_modules/

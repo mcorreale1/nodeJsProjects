@@ -1,17 +1,9 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const express = require('express');
 const config = require ('./config.json');
 const {Client, GatewayIntentBits, Events, EmbedBuilder} = require('discord.js');
 const discKey = config['DISCORD'];
 const URLData = require('./leaderboards.json');
-
-
-
-
-const port = 8080;
-
-const app = express();
 
 const client = new Client({intents: [
     GatewayIntentBits.Guilds, 
@@ -76,48 +68,30 @@ function getMessageParams(msg) {
     return params;
 }
 
-
-/*
-axios.get('https://steamcommunity.com/stats/2226160/leaderboards/10159001').then(
-        res => {
-                const ch = cheerio.load(res.data);
-                console.log(ch('#stats').find('.lbentry:first').text().replace(/\s\s+/g, '; '));
-
-        }).catch (err => console.log(err));*/
-
-
 client.once(Events.ClientReady, async () => {
 	console.log('Ready!');
-    lbURL = getLeaderboardURL('mind', '6');
-    //console.log(await getLeaderboardData(lbURL));
 });
 
-
 client.on(Events.MessageCreate, async interaction => {
-    
     if (interaction.content.charAt(0) != '!' || interaction.content.length > 25) return; 
-    
+
     content =interaction.content.trim();
     params = getMessageParams(content);
-
     if (params.length != 3 ) return;
     console.log(params);
+
     const steamDBUrl = getLeaderboardURL(params[1], params[2]);
     const lbData = await getLeaderboardData(steamDBUrl);
-    console.log(lbData);
-    
+
     const formattedData = [];
     formattedData.push(':first_place: ' + lbData[0].substring(3));
     formattedData.push(':second_place: ' + lbData[1].substring(3));
     formattedData.push( ':third_place: ' + lbData[2].substring(3));
+
     for ( i of lbData.slice(3, 15)) 
         formattedData.push(i);
-    
 
     const fieldData = formattedData.join("\r\n");
-
-      console.log(formattedData);
-
     const embed = new EmbedBuilder()
         .setColor(0x0099FF)
 	    .setTitle(':trophy: Leaderboard Data for ' + capitalize(params[1]) + ' ' + params[2])
@@ -127,7 +101,7 @@ client.on(Events.MessageCreate, async interaction => {
             {name: " ", value: fieldData}
         )
         .setTimestamp()
-        .setFooter({text:"(at) Mcore if this bot be ackin' weird"});
+        .setFooter({text:"(at) Mcore#1625 if this bot be ackin' weird"});
 
 	// ...
     interaction.channel.send({

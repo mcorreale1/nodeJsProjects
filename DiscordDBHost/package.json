@@ -9,7 +9,11 @@
   "author": "Michael Correale",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.3.4",
+    "cheerio": "^1.0.0-rc.12",
+    "discord.js": "^14.7.1",
     "express": "^4.18.1",
-    "mongodb": "^4.8.1"
+    "mongodb": "^4.8.1",
+    "steam-js-api": "^1.1.0"
   }
 }
