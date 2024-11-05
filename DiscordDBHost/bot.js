@@ -40,34 +40,8 @@ client.on(Events.MessageCreate, async interaction => {
     content =interaction.content.trim();
     params = getMessageParams(content);
     if (params.length != 3 ) return;
-    console.log(params);
 
-    const steamDBUrl = entFile.getLeaderboardURL(params[1], params[2]);
-    const lbData = await entFile.getLeaderboardData(steamDBUrl);
-
-
-    const formattedData = [];
-    formattedData.push(':first_place: ' + lbData[0].substring(3));
-    formattedData.push(':second_place: ' + lbData[1].substring(3));
-    formattedData.push( ':third_place: ' + lbData[2].substring(3));
-
-    for ( i of lbData.slice(3, 15)) 
-        formattedData.push(i);
-
-    const fieldData = formattedData.join("\r\n");
-    const embed = new EmbedBuilder()
-        .setColor(0x0099FF)
-	    .setTitle(':trophy: Leaderboard Data for ' + capitalize(params[1]) + ' ' + params[2])
-	    .setURL(steamDBUrl)
-        .setAuthor({name: 'Mcore#1625', url: 'https://github.com/mcorreale1/nodeJsProjects/tree/main/DiscordDBHost'})
-        .setThumbnail('https://cdn.akamai.steamstatic.com/steam/apps/2226160/header.jpg?t=1678061552')  
-        .addFields(
-            {name: " ", value: fieldData}
-        )
-        .setTimestamp()
-        .setFooter({text:"(at) Mcore#1625 if this bot be ackin' weird"});
-
-	// ...
+    const embed = await entFile.generateEmbed(params);
     interaction.channel.send({
         
         embeds: [embed]
