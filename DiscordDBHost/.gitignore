@@ -2,4 +2,5 @@ conf.txt
 config.json
 scrape.js
 steam.js
+serverHost.js
 node_modules/
